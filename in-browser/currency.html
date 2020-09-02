@@ -10,10 +10,10 @@
 	<div id="app">
 		<div class="container">
 			<div class="row">
-				<div v-for="currency in info" :key="currency.rate_float" class="col-md-r">
+				<div v-for="currency in info" :key="currency.rate_float" class="col-md-4">
 					<p class="text-dark">{{currency.code}} (<span>{{currency.description}}</span>)
 					</p>
-					<p class="text-danger"><span v-html="currency.symbol"></span> {{currency.rate_float | currencydecmial}}
+					<p class="text-danger"><span v-html="currency.symbol"></span> {{currency.rate_float | currencydecimal}}</p>
 				</div>
 			</div>
 		</div>
