@@ -1,17 +1,17 @@
 <template>
 	<div>
-		<h1 class="text-success">{{title}}</h1>
+		<h1 class="text-danger">{{title}}</h1>
 	</div>
 </template>
 <script>
 export default {
-	name: 'Testing',
+	name: 'Exercise',
 	props: {
 		msg: String
 	},
 	data (){
       return {
-        title: 'Testing Vue'
+        title: 'Exercise Vue'
       }
     }
 }
