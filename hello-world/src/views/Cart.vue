@@ -47,12 +47,11 @@
         },
         data() {
             return {
-                price: 0,
+                price: this.total(),
                 destroy: false
             }
         },
         mounted(){
-            this.total()
         },
         computed: {
             getItems() {
@@ -64,7 +63,7 @@
                 this.price += newPrice
             },
             total() {
-                this.$store.state.cart.map((item) => { this.price += item.item_price * item.qty })
+                return this.$store.state.cart.reduce((adder, item) => { return adder + item.item_price * item.qty }, 0)
             },
             deleteItem(id){
                 this.$store.dispatch('deleteFromCart', id)
