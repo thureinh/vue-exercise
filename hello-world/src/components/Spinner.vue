@@ -6,7 +6,7 @@
 	       </div>
 	    </div>
 	    <div class="row">
-	      <strong class="h2 text-info">လိုင်းမကောင်းဘူး။ ခဏစောင့်...</strong>
+	      <strong class="h2 text-info">ခဏစောင့်...</strong>
 	    </div>
 	</div>	
 </template>

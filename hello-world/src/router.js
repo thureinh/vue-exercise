@@ -8,23 +8,34 @@ import Testing from '@/views/Testing.vue'
 import Exercise from '@/views/Exercise.vue'
 import Home from '@/views/HelloWorld.vue'
 import Detail from '@/views/Detail.vue'
+import Cart from '@/views/Cart.vue'
 
 const router = new VueRouter({
   routes: [
     {
+      name: 'home',
       path: '/',
       component: Home
     },
     { 
+      name: 'testing',
       path: '/testing', 
       component: Testing 
     },
     { 
+      name: 'exercise',
       path: '/exercise', 
       component: Exercise 
     },
-    { path: '/item/:id', 
+    { 
+      name: 'item-detail',
+      path: '/item/:id', 
       component: Detail 
+    },
+    {
+      name: 'cart',
+      path: '/cart',
+      component: Cart
     }
   ],
   mode: 'history' // abstract

@@ -23,15 +23,15 @@
 					</div>
 					<div class="col-lg-12">
 						<h6>Quantity :</h6>
-						<input type="number" class="form-control text-center w-100" value="1">
+						<input type="number" v-model.number="quantity" class="form-control text-center w-100" value="1" min="1">
 					</div>
 					<div class="col-lg-12 mt-3">
 						<div class="row">
 							<div class="col-lg-6 pb-2">
-								<a href="#" class="btn btn-danger w-100">Add To Cart</a>
+								<a href="#" @click="addToCart($event)" class="btn btn-danger w-100">Add To Cart</a>
 							</div>
 							<div class="col-lg-6">
-								<a href="#" class="btn btn-success w-100">Shop Now</a>
+								<b-link :to="{name: 'exercise'}" class="btn btn-success w-100">Shop Now</b-link>
 							</div>
 						</div>
 					</div>
@@ -45,16 +45,30 @@
 		props: {
 			item: Object
 		},
+		data: function (){
+			return {
+				getItem: this.item,
+				quantity: 1
+			}
+		},
+		methods: {
+			addToCart(event) {
+				if(event)
+					event.preventDefault()
+				this.$store.dispatch('addToCart', {...this.getItem, qty: this.quantity})
+				this.$router.push({path: '/cart'})
+			}
+		},
 		filters: {
-			commafy( num ) {
-			    let str = num.toString().split('.');
-			    if (str[0].length >= 5) {
-			        str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
-			    }
-			    if (str[1] && str[1].length >= 5) {
-			        str[1] = str[1].replace(/(\d{3})/g, '$1 ');
-			    }
-			    return str.join('.');
+			commafy( myString ) {
+                let objRegex  = new RegExp('(-?[0-9]+)([0-9]{3})');                        
+                //Check For Criteria....           
+                while(objRegex.test(myString))           
+                {           
+                            //Add Commas After Every Three Digits Of Number...           
+                            myString = myString.toString().replace(objRegex, '$1,$2');           
+                } 
+                return myString
 			}
 		},
 	}	

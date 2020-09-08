@@ -11,6 +11,7 @@
         <b-navbar-nav>
           <b-nav-item to="/testing">Testing</b-nav-item>
           <b-nav-item to="/exercise">Exercise</b-nav-item>
+          <b-nav-item to="/cart"><font-awesome-icon :icon="['fas', 'shopping-cart']"/>&nbsp;Cart<b-badge variant="info">{{cartCount}}</b-badge></b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -55,6 +56,12 @@
 export default {
   name: 'App',
   mounted(){
+  },
+  computed: {
+    cartCount() {
+      this.$store.dispatch('getData')
+      return this.$store.getters.count
+    }
   }
 }
 </script>
