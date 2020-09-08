@@ -1,110 +1,61 @@
 <template>
+	<div>
+		<section class="section-content">
+		<div class="container">
 
-<br>  <p class="text-center">More bootstrap 4 components on <a href="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com</a></p>
-<hr>
-<div class="row">
-<div class="col-md-4">
-	<figure class="card card-product">
-		<div class="img-wrap"><img src="https://s9.postimg.org/tupxkvfj3/image.jpg"></div>
-		<figcaption class="info-wrap">
-				<h4 class="title">Another name of item</h4>
-				<p class="desc">Some small description goes here</p>
-				<div class="rating-wrap">
-					<div class="label-rating">132 reviews</div>
-					<div class="label-rating">154 orders </div>
-				</div> <!-- rating-wrap.// -->
-		</figcaption>
-		<div class="bottom-wrap">
-			<a href="" class="btn btn-sm btn-primary float-right">Order Now</a>	
-			<div class="price-wrap h5">
-				<span class="price-new">$1280</span> <del class="price-old">$1980</del>
-			</div> <!-- price-wrap.// -->
-		</div> <!-- bottom-wrap.// -->
-	</figure>
-</div> <!-- col // -->
-<div class="col-md-4">
-	<figure class="card card-product">
-		<div class="img-wrap"><img src="https://s9.postimg.org/ojb106167/image.jpg"> </div>
-		<figcaption class="info-wrap">
-				<h4 class="title">Good product</h4>
-				<p class="desc">Some small description goes here</p>
-				<div class="rating-wrap">
-					<div class="label-rating">132 reviews</div>
-					<div class="label-rating">154 orders </div>
-				</div> <!-- rating-wrap.// -->
-		</figcaption>
-		<div class="bottom-wrap">
-				<a href="" class="btn btn-sm btn-primary float-right">Order Now</a>	
-				<div class="price-wrap h5">
-					<span class="price-new">$1280</span> <del class="price-old">$1980</del>
-				</div> <!-- price-wrap.// -->
-		</div> <!-- bottom-wrap.// -->
-	</figure>
-</div> <!-- col // -->
-<div class="col-md-4">
-	<figure class="card card-product">
-		<div class="img-wrap"><img src="https://s9.postimg.org/4ooze1tof/image.jpg"></div>
-		<figcaption class="info-wrap">
-				<h4 class="title">Product name goes here</h4>
-				<p class="desc">Some small description goes here</p>
-				<div class="rating-wrap">
-					<div class="label-rating">132 reviews</div>
-					<div class="label-rating">154 orders </div>
-				</div> <!-- rating-wrap.// -->
-		</figcaption>
-		<div class="bottom-wrap">
-				<a href="" class="btn btn-sm btn-primary float-right">Order Now</a>	
-				<div class="price-wrap h5">
-					<span class="price-new">$1280</span> <del class="price-old">$1980</del>
-				</div> <!-- price-wrap.// -->
-		</div> <!-- bottom-wrap.// -->
-	</figure>
-</div> <!-- col // -->
-</div>
+		<header class="section-heading">
+			<h1 class="section-title my-3">Popular products</h1>
+		</header><!-- sect-heading -->
+		<div class="d-flex flex-column align-items-center justify-content-center" v-if="loading">
+			<Spinner/>
+		</div>
+		<div class="row" v-else>
+			<ItemCard v-for="(item, index) in items" :icon="star" :item="item" :key="index"/>
+		</div> <!-- row.// -->
+		</div> <!-- container .//  -->
+		</section>
+	</div>
 </template>
 <script>
+import { faStar } from '@fortawesome/free-solid-svg-icons'
+import ItemCard from '@/components/ItemCard.vue'
+import ItemService from '@/services/item_service.js'
+import Spinner from '@/components/Spinner.vue'
 export default {
 	name: 'Exercise',
 	props: {
 		msg: String
 	},
+	components: {
+		ItemCard,
+		Spinner
+	},
 	data (){
       return {
-        title: 'Exercise Vue'
+        items: [],
+      	loading: true,
+      	errored: false,
+      	star: faStar,
       }
+    },
+	computed: {
+	},
+    mounted(){
+      this.getItems()
+    },
+    methods:{
+      	getItems(){
+	        ItemService.getItems()
+	            .then(res => {
+	              this.items = res.data.items
+	            })
+	            .catch(err => {
+	              console.log('There was an error:',err.response)
+	              this.errored = true
+	            })
+	            .finally(() => this.loading = false)
+      	}
     }
 }
 </script>
-<style>
-.card-product .img-wrap {
-    border-radius: 3px 3px 0 0;
-    overflow: hidden;
-    position: relative;
-    height: 220px;
-    text-align: center;
-}
-.card-product .img-wrap img {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: cover;
-}
-.card-product .info-wrap {
-    overflow: hidden;
-    padding: 15px;
-    border-top: 1px solid #eee;
-}
-.card-product .bottom-wrap {
-    padding: 15px;
-    border-top: 1px solid #eee;
-}
-
-.label-rating { margin-right:10px;
-    color: #333;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.card-product .price-old {
-    color: #999;
-}	
-</style>
+<style></style>

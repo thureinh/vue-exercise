@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{title}}</h1>
+    <h1>Testing Vue</h1>
     <p>{{msg}}</p>
     <button @click="goBack()">Go Back</button>
     <p>This is testing for child components.</p>
@@ -11,11 +11,6 @@
   export default{
     props:{
       msg:null
-    },
-    data (){
-      return {
-        title: 'Testing Vue'
-      }
     },
     computed: {
       username() {
