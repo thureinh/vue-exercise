@@ -42,6 +42,11 @@ const store = new Vuex.Store({
 		{
 			commit('filterByID', payload)
 			commit('saveCart')
+		},
+		deleteAll({commit})
+		{
+			localStorage.clear()
+			commit('getData')
 		}
 	},
 	getters: {

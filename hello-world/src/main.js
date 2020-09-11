@@ -6,7 +6,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import router from './router.js'
 import store from './store.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrash, faInfoCircle, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faInfoCircle, faShoppingCart, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
@@ -18,7 +18,7 @@ Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 
-library.add(faTrash, faInfoCircle, faShoppingCart)
+library.add(faTrash, faInfoCircle, faShoppingCart, faPencilAlt)
 
 Vue.config.productionTip = false
 

@@ -9,6 +9,7 @@ import Exercise from '@/views/Exercise.vue'
 import Home from '@/views/HelloWorld.vue'
 import Detail from '@/views/Detail.vue'
 import Cart from '@/views/Cart.vue'
+import Order from '@/views/Order.vue'
 
 const router = new VueRouter({
   routes: [
@@ -36,6 +37,11 @@ const router = new VueRouter({
       name: 'cart',
       path: '/cart',
       component: Cart
+    },
+    {
+      name: 'order',
+      path: '/order',
+      component: Order
     }
   ],
   mode: 'history' // abstract

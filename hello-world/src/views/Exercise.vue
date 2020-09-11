@@ -6,9 +6,9 @@
 		<header class="section-heading">
 			<h1 class="section-title my-3">Popular products</h1>
 		</header><!-- sect-heading -->
-		<div class="d-flex flex-column align-items-center justify-content-center" v-if="loading">
-			<Spinner/>
-		</div>
+
+		<Spinner text="ခဏစောင့်" v-if="loading"/>
+
 		<div class="row" v-else>
 			<ItemCard v-for="(item, index) in items" :icon="star" :item="item" :key="index"/>
 		</div> <!-- row.// -->

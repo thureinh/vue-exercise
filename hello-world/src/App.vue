@@ -11,6 +11,7 @@
         <b-navbar-nav>
           <b-nav-item to="/testing">Testing</b-nav-item>
           <b-nav-item to="/exercise">Exercise</b-nav-item>
+          <b-nav-item to="/order">Orders</b-nav-item>
           <b-nav-item to="/cart"><font-awesome-icon :icon="['fas', 'shopping-cart']"/>&nbsp;Cart<b-badge variant="info">{{cartCount}}</b-badge></b-nav-item>
         </b-navbar-nav>
 

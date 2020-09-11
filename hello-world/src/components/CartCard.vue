@@ -50,7 +50,8 @@
 		watch: {
 		    quantity: function (newQuantity, oldQuantity) {
 		    	let result = newQuantity - oldQuantity
-	    		this.sendToParent(result * this.item.item_price)
+		    	let data = [this.item.item_id, newQuantity]
+	    		this.sendToParent({ price: result * this.item.item_price, data })
 		    }
 		},
 		methods: {

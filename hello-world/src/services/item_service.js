@@ -18,5 +18,11 @@ export default{
   // detail (Detail)
   getItem(id){
     return apiClient.get('/items/'+id)
+  },
+  orderItems(items){
+    return apiClient.post('/orders', items)
+  },
+  getOrders(){
+    return apiClient.get('/orders')
   }
 }

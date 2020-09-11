@@ -1,5 +1,6 @@
 <template>
-	<div class="card shopping-cart">
+    <Spinner text="မှာနေပြီ" v-if="ordering"/>
+	<div class="card shopping-cart" v-else>
         <div class="card-header bg-dark text-light">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
             Shipping cart
@@ -31,7 +32,7 @@
                 </div>
             </div>
             <div class="pull-right" style="margin: 10px">
-                <a href="" class="btn btn-success pull-right">Checkout</a>
+                <button @click="checkout" :disabled="disable" class="btn btn-success pull-right">Checkout</button>
                 <div class="pull-right" style="margin: 5px">
                     Total price: <b>${{price | addComma}}</b>
                 </div>
@@ -41,32 +42,70 @@
 </template>
 <script>
     import CartCard from '@/components/CartCard.vue'
+    import ItemService from '@/services/item_service.js'
+    import Spinner from '@/components/Spinner.vue'
+    import swal from 'sweetalert'
 	export default{
         components: {
-            CartCard
+            CartCard,
+            Spinner
         },
         data() {
             return {
                 price: this.total(),
-                destroy: false
+                destroy: false,
+                items: [],
+                ordering: false
             }
         },
-        mounted(){
+        mounted: function () {
+            this.$store.state.cart.map((item) => {
+                this.items[item.item_id] = item.qty
+            })
         },
         computed: {
             getItems() {
                 return this.$store.state.cart
+            },
+            disable() {
+                if(this.$store.state.cart.length > 0)
+                    return false
+                else
+                    return true
             }
         },
         methods: {
-            changePrice(newPrice) {
-                this.price += newPrice
+            changePrice(child) {
+                this.price += child.price
+                this.items[child.data[0]] = child.data[1]
             },
             total() {
                 return this.$store.state.cart.reduce((adder, item) => { return adder + item.item_price * item.qty }, 0)
             },
             deleteItem(id){
                 this.$store.dispatch('deleteFromCart', id)
+            },
+            checkout(){
+                this.ordering = true
+                let json = []
+                for (var i = this.items.length - 1; i >= 0; i--) {
+                    if(this.items[i] !== undefined)
+                        json.push({item_id: i, item_qty: this.items[i]})
+                }
+                json = {items: json}
+                JSON.stringify(json)
+                ItemService.orderItems(json)
+                .then(() => {
+                    this.$store.dispatch('deleteAll')
+                    this.price = 0
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    this.ordering = false
+                    swal("Successfully Ordered!", "Thanks you very much", "success")
+                })
             }
         },
         filters: {

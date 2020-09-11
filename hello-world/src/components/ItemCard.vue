@@ -48,8 +48,8 @@
                 //Check For Criteria....           
                 while(objRegex.test(myString))           
                 {           
-                            //Add Commas After Every Three Digits Of Number...           
-                            myString = myString.toString().replace(objRegex, '$1,$2');           
+                    //Add Commas After Every Three Digits Of Number...           
+                    myString = myString.toString().replace(objRegex, '$1,$2');           
                 } 
                 return myString
 			}

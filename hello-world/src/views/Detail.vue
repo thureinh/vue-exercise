@@ -1,8 +1,6 @@
 <template>
 	<div>
-		<div class="d-flex flex-column align-items-center justify-content-center" v-if="loading">
-			<Spinner/>
-		</div>
+		<Spinner text="ခဏစောင့်" v-if="loading"/>
 		<ItemDetail :item="item" v-else/>
 	</div>
 </template>
