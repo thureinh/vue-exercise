@@ -1,11 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import ItemService from '@/services/item_service.js'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		cart: []
+		cart: [],
+		token: localStorage.getItem('token') || '',
+		authStatus: '',
+		user: {}
 	},
 	mutations: {
 		addToCart(state, payload){
@@ -27,7 +31,22 @@ const store = new Vuex.Store({
 			}else{
 				state.cart = []
 			}
-		}
+		},
+	    authSuccess(state,token){
+	      state.authStatus = 'success'
+	      localStorage.setItem('token',token)
+	      state.token = token
+	    },
+	    authFail(state){
+	      state.authStatus = 'fail'
+	    },
+	    storeUserData(state,user){
+	    	state.user = user
+	    },
+	    logout(state){
+	      localStorage.removeItem('token')
+	      state.token = null
+	    },
 	},
 	actions: {
 		addToCart({commit}, payload){
@@ -45,9 +64,38 @@ const store = new Vuex.Store({
 		},
 		deleteAll({commit})
 		{
-			localStorage.clear()
+			localStorage.removeItem('cart')
 			commit('getData')
-		}
+		},
+		login({commit}, user){
+			return new Promise((resolve, reject) => {
+				ItemService.getClientCredentials(user)()
+				.then(token => {
+					commit('authSuccess', token.access_token)
+					resolve(token.access_token)
+				})
+				.catch(err => {
+                  commit('authFail')
+                  localStorage.removeItem('token')
+                  reject(err)
+              	})
+			})	
+		},
+	    logout({commit}){
+	      commit('logout')
+	    },
+	    getUser(state){
+	      return new Promise((resolve, reject) => {
+	        ItemService.getUser()
+	        .then(res => {
+	            state.commit('storeUserData', res.data)
+	            resolve(res)
+	        })
+	        .catch(err => {
+	            reject(err)
+	        })
+	      })
+	    },		
 	},
 	getters: {
 		count: state => {
@@ -55,7 +103,9 @@ const store = new Vuex.Store({
 			if(state.cart.length > 0)
 				state.cart.map(value => count += value.qty)
 			return count
-		}
+		},
+		isLoggedIn: state => !!state.token,
+    	authStatus: state => state.authStatus,
 	}
 })
 

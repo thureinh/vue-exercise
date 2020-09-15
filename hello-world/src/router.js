@@ -1,6 +1,7 @@
 import Vue from 'vue'
 // router
 import VueRouter from 'vue-router'
+import store from './store.js'
 
 Vue.use(VueRouter)
 
@@ -10,6 +11,8 @@ import Home from '@/views/HelloWorld.vue'
 import Detail from '@/views/Detail.vue'
 import Cart from '@/views/Cart.vue'
 import Order from '@/views/Order.vue'
+import Login from '@/views/Login.vue'
+import Register from '@/views/Register.vue'
 
 const router = new VueRouter({
   routes: [
@@ -40,11 +43,35 @@ const router = new VueRouter({
     },
     {
       name: 'order',
-      path: '/order',
-      component: Order
+      path: '/orders',
+      component: Order,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      name: 'login',
+      path: '/login',
+      component: Login
+    },
+    {
+      name: 'register',
+      path: '/register',
+      component: Register
     }
   ],
   mode: 'history' // abstract
 });
 
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next('/login')
+  }else{
+    next()
+  }
+})
 export default router

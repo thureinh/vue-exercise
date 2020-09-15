@@ -32,7 +32,8 @@
                 </div>
             </div>
             <div class="pull-right" style="margin: 10px">
-                <button @click="checkout" :disabled="disable" class="btn btn-success pull-right">Checkout</button>
+                <button v-if="isLoggedIn" @click="checkout" :disabled="disable" class="btn btn-success pull-right">Checkout</button>
+                <b-link v-else to="/login">Login to checkout</b-link>
                 <div class="pull-right" style="margin: 5px">
                     Total price: <b>${{price | addComma}}</b>
                 </div>
@@ -72,7 +73,10 @@
                     return false
                 else
                     return true
-            }
+            },
+            isLoggedIn() { 
+                return this.$store.getters.isLoggedIn
+            },
         },
         methods: {
             changePrice(child) {
@@ -87,12 +91,15 @@
             },
             checkout(){
                 this.ordering = true
-                let json = []
+                this.$session.start()
+                let user = this.$session.get('user').id
+                let json = { user, items: []  }
                 for (var i = this.items.length - 1; i >= 0; i--) {
                     if(this.items[i] !== undefined)
-                        json.push({item_id: i, item_qty: this.items[i]})
+                    {
+                        json.items.push({item_id: i, item_qty: this.items[i]})
+                    }
                 }
-                json = {items: json}
                 JSON.stringify(json)
                 ItemService.orderItems(json)
                 .then(() => {

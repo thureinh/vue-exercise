@@ -8,6 +8,7 @@ import store from './store.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTrash, faInfoCircle, faShoppingCart, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
+import VueSession from 'vue-session'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)
@@ -17,6 +18,7 @@ Vue.component('font-awesome-layers-text', FontAwesomeLayersText)
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+Vue.use(VueSession)
 
 library.add(faTrash, faInfoCircle, faShoppingCart, faPencilAlt)
 
